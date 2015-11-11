@@ -33,33 +33,36 @@ Daily = React.createClass({
     Images.insert(file, function (err, fileObj) {
       if (err){
          // handle error
-         console.log('two');
       } else {
-        console.log('three');
+        console.log('insert called');
          // handle success depending what you need to do
         //var userId = Meteor.userId();
-        var imageUrl = {
-          "imageUrl": "/cfs/files/images/" + fileObj._id
-        };
+        let imageUrl = "/cfs/files/images/" + fileObj._id;
         //Meteor.users.update(userId, {$set: imagesURL});
         //console.log(this.props.daily._id);
-        console.log(id);
+        console.log(id._str);
 
         // @todo: Use a meteor method instead of this, which is calling directly from
         // the client without any security.
         Dailies.update(id, {
-          $set: {imageUrl: imageUrl}
+          $set: {
+            imageUrl: imageUrl,
+            createdAt: new Date()
+          }
         });
+
+        // Add a new empty daily. 
+        Dailies.insert({});
       }
-      console.log('four');
     });
      //});
   },
 
   renderImage() {
+    console.log(this.props.daily);
     return (
       <span className="url">
-         {this.props.daily.imageUrl}
+         <img src={this.props.daily.imageUrl} />
       </span>
     );
   },
