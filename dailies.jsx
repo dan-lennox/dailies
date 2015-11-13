@@ -1,10 +1,10 @@
 // Define a collection to hold our dailies
 Dailies = new Mongo.Collection("dailies");
 
-var imageStore = new FS.Store.GridFS("images");
+ImageStore = new FS.Store.GridFS("images");
 
 Images = new FS.Collection("images", {
- stores: [imageStore]
+ stores: [ImageStore]
 });
 
 // @Todo - image access
@@ -44,6 +44,36 @@ if (Meteor.isClient) {
  
   Meteor.startup(function () {
     // Use Meteor.startup to render the component after the page is ready
-    React.render(<App />, document.getElementById("render-target"));
+    ReactDOM.render(<App />, document.getElementById("render-target"));
   });
+
+  // Images.on('stored', function(fileObj, storeName) {
+  //   console.log('stoooorreed');
+  // });
 }
+
+if (Meteor.isServer) {
+
+  
+}
+
+// imageStore.on('stored', Meteor.bindEnvironment(function(fileObj, storeName) {
+//   if (storeName === 'images') {
+//       let imageUrl = "/cfs/files/images/" + fileObj._id;
+//       //Meteor.users.update(userId, {$set: imagesURL});
+//       //console.log(this.props.daily._id);
+//       console.log(id._str);
+
+//       // @todo: Use a meteor method instead of this, which is calling directly from
+//       // the client without any security.
+//       Dailies.update(id, {
+//         $set: {
+//           imageUrl: imageUrl,
+//           createdAt: new Date()
+//         }
+//       });
+
+//       // Add a new empty daily. 
+//       Dailies.insert({});
+//   }
+// }, function() { console.log('Failed to bind environment'); }));

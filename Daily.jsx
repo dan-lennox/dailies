@@ -30,39 +30,76 @@ Daily = React.createClass({
     var file = event.target.files[0];
     var id = this.props.daily._id;
 
-    Images.insert(file, function (err, fileObj) {
-      if (err){
-         // handle error
-      } else {
-        console.log('insert called');
+    var fileObj = Images.insert(file);// {
+      // if (err){
+      //    // handle error
+      // } else {
+      //   console.log('insert called');
+
+        // let imageUrl = "/cfs/files/images/" + fileObj._id;
+        // //Meteor.users.update(userId, {$set: imagesURL});
+        // //console.log(this.props.daily._id);
+        // console.log(id._str);
+
+        // // @todo: Use a meteor method instead of this, which is calling directly from
+        // // the client without any security.
+        // Dailies.update(id, {
+        //   $set: {
+        //     imageUrl: imageUrl,
+        //     createdAt: new Date()
+        //   }
+        // });
+
+        // // Add a new empty daily. 
+        // Dailies.insert({});
+
          // handle success depending what you need to do
         //var userId = Meteor.userId();
-        let imageUrl = "/cfs/files/images/" + fileObj._id;
-        //Meteor.users.update(userId, {$set: imagesURL});
-        //console.log(this.props.daily._id);
-        console.log(id._str);
 
-        // @todo: Use a meteor method instead of this, which is calling directly from
-        // the client without any security.
-        Dailies.update(id, {
-          $set: {
-            imageUrl: imageUrl,
-            createdAt: new Date()
-          }
-        });
+        // ImageStore.on('stored', function(storeName, fileObj) {
+      //   console.log('hello stored');
+      // });
 
-        // Add a new empty daily. 
-        Dailies.insert({});
+      // Timer every 1 second
+        // var intervalHandle = Meteor.setInterval(function () {
+        //     console.log("Inside interval");
+        //     fileObj.hasStored()
+        //     if (fileObj.hasStored("ImageStore")) {
+        //         console.log('stored');
+
+        //         // file has stored, close out interval
+        //         Meteor.clearInterval(intervalHandle);
+        //     }
+        //     else {
+        //       console.log('not stored');
+        //     }
+        // }, 1000);
+        
+      //}
+
+
+      
+
+    //});
+
+    // @todo: Use a meteor method instead of this, which is calling directly from
+    // the client without any security.
+    Dailies.update(id, {
+      $set: {
+        image: fileObj,
+        createdAt: new Date()
       }
     });
-     //});
+
+    // Add a new empty daily. 
+    Dailies.insert({});
   },
 
   renderImage() {
-    console.log(this.props.daily);
+    var file = Images.findOne({'_id': this.props.daily.image._id});
     return (
       <span className="url">
-         <img src={this.props.daily.imageUrl} />
+         <img src={file.url()} />
       </span>
     );
   },
@@ -81,7 +118,7 @@ Daily = React.createClass({
   render() {
     return (
       <div>
-        {this.props.daily.imageUrl ? this.renderImage() : this.renderForm()}
+        {this.props.daily.image ? this.renderImage() : this.renderForm()}
       </div>
     );
   }
