@@ -4,7 +4,12 @@ Dailies = new Mongo.Collection("dailies");
 ImageStore = new FS.Store.GridFS("images");
 
 Images = new FS.Collection("images", {
- stores: [ImageStore]
+ stores: [ImageStore],
+ filter: {
+    allow: {
+      contentTypes: ['image/*'] //allow only images in this FS.Collection
+    }
+  }
 });
 
 // @Todo - image access
@@ -39,6 +44,7 @@ Images.allow({
   }
 });
 
+
 if (Meteor.isClient) {
   // This code is executed on the client only
  
@@ -56,24 +62,3 @@ if (Meteor.isServer) {
 
   
 }
-
-// imageStore.on('stored', Meteor.bindEnvironment(function(fileObj, storeName) {
-//   if (storeName === 'images') {
-//       let imageUrl = "/cfs/files/images/" + fileObj._id;
-//       //Meteor.users.update(userId, {$set: imagesURL});
-//       //console.log(this.props.daily._id);
-//       console.log(id._str);
-
-//       // @todo: Use a meteor method instead of this, which is calling directly from
-//       // the client without any security.
-//       Dailies.update(id, {
-//         $set: {
-//           imageUrl: imageUrl,
-//           createdAt: new Date()
-//         }
-//       });
-
-//       // Add a new empty daily. 
-//       Dailies.insert({});
-//   }
-// }, function() { console.log('Failed to bind environment'); }));
