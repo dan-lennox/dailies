@@ -27,18 +27,13 @@ Daily = React.createClass({
     var file = event.target.files[0];
     var id = this.props.daily._id;
 
-    // Insert the file.
+    // Insert the file in the FS.collection
     var thisFile = Images.insert(file);
-
-    Dailies.update(id, {
-      $set: {
-        image: thisFile,
-        createdAt: new Date()
-      }
-    });
-    //Add a new empty daily. 
-    Dailies.insert({});
-    
+    // Update the Daily in the database.
+    Meteor.call('updateDaily', id, thisFile);
+    // Create a new empty daily (next day);
+    // @TODO: Replace with time/calander based adding of next daily.
+    Meteor.call('addDaily');
   },
 
   renderImage() {
