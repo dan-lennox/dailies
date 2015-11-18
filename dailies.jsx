@@ -4,10 +4,12 @@ Dailies = new Mongo.Collection("dailies");
 ImageStore = new FS.Store.GridFS("images");
 
 Images = new FS.Collection("images", {
- stores: [ImageStore],
- filter: {
+  stores: [ImageStore],
+  filter: {
     allow: {
-      contentTypes: ['image/*'] //allow only images in this FS.Collection
+      // Allow only images in this FS.Collection.
+      contentTypes: ['image/*'], 
+      extensions: ['png', 'jpg', 'jpeg', 'tiff']
     }
   }
 });
