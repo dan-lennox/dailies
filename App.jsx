@@ -1,18 +1,25 @@
+injectTapEventPlugin();
 
-
-var {
+const {
   AppCanvas,
   AppBar,
   Styles,
   RaisedButton,
-  DatePicker
-  } = MUI;
-var { ThemeManager, LightRawTheme } = Styles;
+  DatePicker,
+  IconMenu,
+  IconButton,
+  Menu,
+  MenuItem,
+  MoreVertIcon,
+  FlatButton,
+  LeftNav
+} = MUI;
+const { ThemeManager, LightRawTheme } = Styles;
 
 FlowRouter.route('/', {
   name: 'home',
   action: function(params) {
-    /* The key 'content' is now a function */
+    //The key 'content' is now a function 
     ReactLayout.render(App, {
       content() {
         return <App />;
@@ -21,9 +28,15 @@ FlowRouter.route('/', {
   }
 });
 
+// Define menu items for LeftNav
+const menuItems = [
+  { route: '/', text: 'Home' },
+  { route: 'about', text: 'About' },
+  { route: 'contact', text: 'Contact' },
+];
+
 // App component - represents the whole app
 App = React.createClass({
-
 
   //This mixin makes the getMeteorData method work
   mixins: [ReactMeteorData],
@@ -35,6 +48,13 @@ App = React.createClass({
     }
   },
 
+  _handleClick(e) {
+    e.preventDefault();
+ 
+    // Show/Hide the LeftMenu
+    this.refs.leftNav.toggle();
+  },
+
   // Material UI code. See https://github.com/mrphu3074/react-material-ui/
   childContextTypes: {
     muiTheme: React.PropTypes.object
@@ -42,9 +62,9 @@ App = React.createClass({
 
   // Material UI code. See https://github.com/mrphu3074/react-material-ui/
   getChildContext() {
-      return {
-          muiTheme: ThemeManager.getMuiTheme(LightRawTheme)
-      };
+    return {
+        muiTheme: ThemeManager.getMuiTheme(LightRawTheme)
+    };
   },
 
   renderDailies() {
@@ -56,22 +76,14 @@ App = React.createClass({
   render() {
     return (
       <AppCanvas>
-        <AppBar 
-          title="Dailies"
-          // iconElementRight = {
-          //   <MUI.IconMenu iconButtonElement={
-          //     <MUI.IconButton><MUI.MoreVertIcon /></MUI.IconButton>
-          //   }>
-          //     <MUI.MenuItem primaryText="Refresh" />
-          //     <MUI.MenuItem primaryText="Help" />
-          //     <MUI.MenuItem primaryText="Sign out" />
-          //   </MUI.IconMenu>
-          // } 
-        />
+        <LeftNav
+          ref="leftNav"
+          docked={false}
+          menuItems={menuItems} />
+
+        <AppBar title="Dailies" onLeftIconButtonTouchTap={this._handleClick} />
         
-        <div className="container">
-          {this.renderDailies()}
-       </div>
+        {this.renderDailies()}
       </AppCanvas>
     );
   }
