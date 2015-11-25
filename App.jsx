@@ -28,12 +28,34 @@ FlowRouter.route('/', {
   }
 });
 
+FlowRouter.route('/login', {
+  name: 'login',
+  action: function(params) {
+    //The key 'content' is now a function 
+    ReactLayout.render(App, {
+      content() {
+        return <Accounts.ui.LoginFormSet />
+      }
+    });
+  }
+});
+
+
+
 // Define menu items for LeftNav
 const menuItems = [
   { route: '/', text: 'Home' },
-  { route: 'about', text: 'About' },
-  { route: 'contact', text: 'Contact' },
+  { type: MenuItem.Types.LINK, payload: 'login', text: 'Log Out' },
+  { type: MenuItem.Types.LINK, payload: 'logout', text: 'Log Out' },
 ];
+
+FlowRouter.route('/logout', {
+    action: function(params, queryParams) {
+      Meteor.logout();
+      FlowRouter.go('/login');
+    }
+});
+
 
 // App component - represents the whole app
 App = React.createClass({
