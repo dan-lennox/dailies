@@ -21,7 +21,7 @@ Daily = React.createClass({
     };
   },
 
-  handleChange(event) {
+  _handleChange(event) {
     event.preventDefault();
  
     var file = event.target.files[0];
@@ -50,7 +50,7 @@ Daily = React.createClass({
         <input
         type="file"
         ref="fileInput" 
-        onChange={this.handleChange} />
+        onChange={this._handleChange} />
       </form>
     );
   },

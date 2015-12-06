@@ -22,7 +22,7 @@ FlowRouter.route('/', {
     //The key 'content' is now a function 
     ReactLayout.render(App, {
       content() {
-        return <App />;
+        return <DailiesListing />;
       }
     });
   }
@@ -40,34 +40,23 @@ FlowRouter.route('/login', {
   }
 });
 
-
-
-// Define menu items for LeftNav
-const menuItems = [
-  { route: '/', text: 'Home' },
-  { type: MenuItem.Types.LINK, payload: 'login', text: 'Log Out' },
-  { type: MenuItem.Types.LINK, payload: 'logout', text: 'Log Out' },
-];
-
 FlowRouter.route('/logout', {
-    action: function(params, queryParams) {
-      Meteor.logout();
-      FlowRouter.go('/login');
-    }
+  triggersEnter: [function(context, redirect) {
+    Meteor.logout();
+    FlowRouter.go('/login');
+  }],
 });
 
 
 // App component - represents the whole app
 App = React.createClass({
 
-  //This mixin makes the getMeteorData method work
   mixins: [ReactMeteorData],
-
-  // Loads items from the Tasks collection and puts them on this.data.tasks
+  
   getMeteorData() {
     return {
-      dailies: Dailies.find({}).fetch()
-    }
+      loggedIn: Meteor.userId()
+    };
   },
 
   _handleClick(e) {
@@ -85,27 +74,37 @@ App = React.createClass({
   // Material UI code. See https://github.com/mrphu3074/react-material-ui/
   getChildContext() {
     return {
-        muiTheme: ThemeManager.getMuiTheme(LightRawTheme)
+      muiTheme: ThemeManager.getMuiTheme(LightRawTheme)
     };
   },
 
-  renderDailies() {
-    return this.data.dailies.map((daily) => {
-      return <Daily key={daily._id} daily={daily} />;
-    });
+  _getMenuItems() {
+    let MenuItems = [];
+    MenuItems.push({ type: MenuItem.Types.LINK, payload: '/', text: 'Home' });
+
+    if (Meteor.userId()) {
+      MenuItems.push({ type: MenuItem.Types.LINK, payload: 'logout', text: 'Log Out' });
+    }
+    else {
+      MenuItems.push({ type: MenuItem.Types.LINK, payload: 'login', text: 'Log In' });
+    }
+    
+    return MenuItems;
   },
 
   render() {
     return (
+
       <AppCanvas>
         <LeftNav
           ref="leftNav"
           docked={false}
-          menuItems={menuItems} />
+          menuItems={this._getMenuItems()} />
 
         <AppBar title="Dailies" onLeftIconButtonTouchTap={this._handleClick} />
         
-        {this.renderDailies()}
+        {this.props.content()}
+
       </AppCanvas>
     );
   }
