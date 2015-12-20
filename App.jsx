@@ -1,4 +1,7 @@
+//Needed for onTouchTap
+//Can go away when react 1.0 release
 injectTapEventPlugin();
+console.log('run');
 
 const {
   AppCanvas,
@@ -16,38 +19,6 @@ const {
 } = MUI;
 const { ThemeManager, LightRawTheme } = Styles;
 
-FlowRouter.route('/', {
-  name: 'home',
-  action: function(params) {
-    //The key 'content' is now a function 
-    ReactLayout.render(App, {
-      content() {
-        return <DailiesListing />;
-      }
-    });
-  }
-});
-
-FlowRouter.route('/login', {
-  name: 'login',
-  action: function(params) {
-    //The key 'content' is now a function 
-    ReactLayout.render(App, {
-      content() {
-        return <Accounts.ui.LoginFormSet />
-      }
-    });
-  }
-});
-
-FlowRouter.route('/logout', {
-  triggersEnter: [function(context, redirect) {
-    Meteor.logout();
-    FlowRouter.go('/login');
-  }],
-});
-
-
 // App component - represents the whole app
 App = React.createClass({
 
@@ -61,9 +32,13 @@ App = React.createClass({
 
   _handleClick(e) {
     e.preventDefault();
- 
     // Show/Hide the LeftMenu
     this.refs.leftNav.toggle();
+  },
+
+  _handleMenuItemClick(event, selectedIndex, menuItem) {
+    // Feed the leftNav material ui MenuItem route into flowrouter.
+    FlowRouter.go(menuItem.route);
   },
 
   // Material UI code. See https://github.com/mrphu3074/react-material-ui/
@@ -78,28 +53,32 @@ App = React.createClass({
     };
   },
 
+  /**
+   * Return an array of menu items.
+   */
   _getMenuItems() {
     let MenuItems = [];
-    MenuItems.push({ type: MenuItem.Types.LINK, payload: '/', text: 'Home' });
+
+    MenuItems.push({ route: '/', text: 'Home'});
 
     if (Meteor.userId()) {
-      MenuItems.push({ type: MenuItem.Types.LINK, payload: 'logout', text: 'Log Out' });
+      MenuItems.push({ route: 'logout', text: 'Log Out' });
     }
     else {
-      MenuItems.push({ type: MenuItem.Types.LINK, payload: 'login', text: 'Log In' });
+      MenuItems.push({ route: 'login', text: 'Log In'});
     }
-    
+
     return MenuItems;
   },
 
   render() {
     return (
-
       <AppCanvas>
         <LeftNav
           ref="leftNav"
           docked={false}
-          menuItems={this._getMenuItems()} />
+          menuItems={this._getMenuItems()}
+          onChange={this._handleMenuItemClick} />
 
         <AppBar title="Dailies" onLeftIconButtonTouchTap={this._handleClick} />
         

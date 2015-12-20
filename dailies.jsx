@@ -20,6 +20,7 @@ var createThumb = function(fileObj, readStream, writeStream) {
 };
 
 if (Meteor.isClient) {
+
   // This code is executed on the client only
  
   // Before installing flowrouter, this is how we handled the initial rendering of
@@ -93,4 +94,38 @@ Images.allow({
     // Only logged in users.
     return true;
   }
+});
+
+// Routes.
+// TODO: Work out convention here.. should this be stored in another file?
+
+FlowRouter.route('/', {
+  name: 'home',
+  action: function(params) {
+    //The key 'content' is now a function 
+    ReactLayout.render(App, {
+      content() {
+        return <DailiesListing />;
+      }
+    });
+  }
+});
+
+FlowRouter.route('/login', {
+  name: 'login',
+  action: function(params) {
+    //The key 'content' is now a function 
+    ReactLayout.render(App, {
+      content() {
+        return <Accounts.ui.LoginFormSet />
+      }
+    });
+  }
+});
+
+FlowRouter.route('/logout', {
+  triggersEnter: [function(context, redirect) {
+    Meteor.logout();
+    FlowRouter.go('/login');
+  }],
 });
