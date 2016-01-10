@@ -105,7 +105,7 @@ FlowRouter.route('/', {
     //The key 'content' is now a function 
     ReactLayout.render(App, {
       content() {
-        return <DailiesListing />;
+        return <div><DailiesListing /></div>;
       }
     });
   }

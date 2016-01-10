@@ -1,3 +1,9 @@
+const {
+  Styles,
+  GridTile,
+} = MUI;
+const { ThemeManager, LightRawTheme } = Styles;
+
 // Daily component.
 Daily = React.createClass({
 
@@ -38,9 +44,9 @@ Daily = React.createClass({
 
   renderImage() {
     return (
-      <span className="url">
-         <img src={this.data.file.url()} />
-      </span>
+      <GridTile key={this.props.daily.image._id}>
+        <img src={this.data.file.url()} />
+      </GridTile>
     );
   },
 
@@ -56,10 +62,6 @@ Daily = React.createClass({
   },
 
   render() {
-    return (
-      <div>
-        {this.props.daily.image ? this.renderImage() : this.renderForm()}
-      </div>
-    );
+    return this.props.daily.image ? this.renderImage() : this.renderForm()
   }
 });

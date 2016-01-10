@@ -15,7 +15,8 @@ const {
   MenuItem,
   MoreVertIcon,
   FlatButton,
-  LeftNav
+  LeftNav,
+  GridList
 } = MUI;
 const { ThemeManager, LightRawTheme } = Styles;
 
