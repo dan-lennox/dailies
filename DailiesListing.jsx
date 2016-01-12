@@ -4,8 +4,7 @@ const {
 } = MUI;
 const { ThemeManager, LightRawTheme } = Styles;
 
-
-const gridListStyle = {width: '100%', marginBottom: 24};
+const gridListStyle = {display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start'};
 
 DailiesListing = React.createClass({
 
@@ -28,13 +27,26 @@ DailiesListing = React.createClass({
     });
 
     return (
-      <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
-        <GridList
-          cellHeight={200}
-          style={gridListStyle}
-          >
-          {dailies}
-        </GridList>
+      <div>
+        <MediaQuery query={'(max-width: 1024px)'}>
+          <GridList
+            cellHeight={170}
+            style={gridListStyle}
+            cols={4}
+            >
+            {dailies}
+          </GridList>
+        </MediaQuery>
+        
+        <MediaQuery query={'(min-width: 1023px)'}>
+          <GridList
+            cellHeight={190}
+            style={gridListStyle}
+            cols={6}
+            >
+            {dailies}
+          </GridList>
+        </MediaQuery>
       </div>
     );
   }

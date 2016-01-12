@@ -1,8 +1,12 @@
 const {
   Styles,
   GridTile,
+  IconButton,
+  StarBorder
 } = MUI;
 const { ThemeManager, LightRawTheme } = Styles;
+
+const gridListItemStyle = {flexShrink: 0, flexGrow: 0, marginTop: '70px'};
 
 // Daily component.
 Daily = React.createClass({
@@ -44,7 +48,12 @@ Daily = React.createClass({
 
   renderImage() {
     return (
-      <GridTile key={this.props.daily.image._id}>
+      <GridTile 
+        key={this.props.daily.image._id}
+        title={'21st Jan'}
+        subtitle={<span>{'by'} <b>{'well done'}</b></span>}
+        style={gridListItemStyle}
+      >
         <img src={this.data.file.url()} />
       </GridTile>
     );
@@ -52,12 +61,17 @@ Daily = React.createClass({
 
   renderForm() {
     return (
-      <form className="image-upload" >
-        <input
-        type="file"
-        ref="fileInput" 
-        onChange={this._handleChange} />
-      </form>
+      <GridTile 
+        key={'new-or-edit'}
+        style={gridListItemStyle}
+      >
+        <form className="image-upload" >
+          <input
+          type="file"
+          ref="fileInput" 
+          onChange={this._handleChange} />
+        </form>
+      </GridTile>
     );
   },
 
