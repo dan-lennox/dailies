@@ -1,19 +1,3 @@
-// Define a collection to hold our dailies
-Dailies = new Mongo.Collection("dailies");
-
-ImageStore = new FS.Store.GridFS("images");
-
-Images = new FS.Collection("images", {
-  stores: [ImageStore],
-  filter: {
-    allow: {
-      // Allow only images in this FS.Collection.
-      contentTypes: ['image/*'], 
-      extensions: ['png', 'jpg', 'jpeg', 'tiff']
-    }
-  }
-});
-
 var createThumb = function(fileObj, readStream, writeStream) {
   // Transform the image into a 10x10px thumbnail
   gm(readStream, fileObj.name()).resize('10', '10').stream().pipe(writeStream);
