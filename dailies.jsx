@@ -14,6 +14,10 @@ if (Meteor.isClient) {
   //   ReactDOM.render(<App />, document.getElementById("render-target"));
   // });
 
+  Meteor.subscribe("Dailies");
+  Meteor.subscribe("Images");
+
+
   Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
   });
