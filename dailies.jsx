@@ -29,6 +29,8 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   // This code is executed on the server only. 
+
+  
 }
 
 Meteor.methods({

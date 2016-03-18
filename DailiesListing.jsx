@@ -13,15 +13,19 @@ DailiesListing = React.createClass({
 
   // Loads items from the Tasks collection and puts them on this.data.tasks
   getMeteorData() {
+    // Add an initial empty daily if no other's are available.
+    //console.log(Dailies.find().fetch().length);
+    if(Dailies.find().count() == 0) {
+      Meteor.call('addDaily');
+    }
+
     return {
-      dailies: Dailies.find({}).fetch()
+      dailies: Dailies.find().fetch()
     }
   },
 
   render() {
 
-    // TODO: this should be something more like.
-    // Meteor.subscribe('blogPost', params.postId)); to get the list of dailies.
     var dailies = this.data.dailies.map((daily) => {
       return <Daily key={daily._id} daily={daily} />;
     });

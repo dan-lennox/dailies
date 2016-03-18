@@ -55,6 +55,7 @@ Daily = React.createClass({
         style={gridListItemStyle}
       >
         <img src={this.data.file.url()} />
+      }
       </GridTile>
     );
   },
