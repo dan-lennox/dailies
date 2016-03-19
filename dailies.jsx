@@ -14,7 +14,7 @@ if (Meteor.isClient) {
   //   ReactDOM.render(<App />, document.getElementById("render-target"));
   // });
 
-  Meteor.subscribe("Dailies");
+  Meteor.subscribe("Dailies", Meteor.userId());
   Meteor.subscribe("Images");
 
 
