@@ -17,7 +17,6 @@ if (Meteor.isClient) {
   Meteor.subscribe("Dailies", Meteor.userId());
   Meteor.subscribe("Images");
 
-
   Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
   });

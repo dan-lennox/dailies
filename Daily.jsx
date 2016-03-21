@@ -26,8 +26,11 @@ Daily = React.createClass({
       query = {'_id': this.props.daily.image._id};
     }
 
+    let date = new Date(this.props.daily.date);
+
     return {
-      file: Images.findOne(query)
+      file: Images.findOne(query),
+      date: date,
     };
   },
 
@@ -41,17 +44,21 @@ Daily = React.createClass({
     var thisFile = Images.insert(file);
     // Update the Daily in the database.
     Meteor.call('updateDaily', id, thisFile);
-    // Create a new empty daily (next day);
-    // @TODO: Replace with time/calander based adding of next daily.
-    Meteor.call('addDaily');
+    
+    // Is it a different day?
+    let today = new Date();
+    if ((today.getDay() + 1) != this.data.date.getDay()) {
+      // Create a new empty daily (next day).
+      Meteor.call('addDaily');
+    }
   },
 
   renderImage() {
     return (
       <GridTile 
         key={this.props.daily.image._id}
-        title={'21st Jan'}
-        subtitle={<span>{'by'} <b>{'well done'}</b></span>}
+        title={this.data.date.toDateString()}
+        // subtitle={<span>{'by'} <b>{'well done'}</b></span>}
         style={gridListItemStyle}
       >
         <img src={this.data.file.url()} />
@@ -66,6 +73,7 @@ Daily = React.createClass({
         key={'new-or-edit'}
         style={gridListItemStyle}
       >
+        <h2>Upload today's creation!</h2>
         <form className="image-upload" >
           <input
           type="file"
