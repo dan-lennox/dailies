@@ -15,7 +15,8 @@ DailiesListing = React.createClass({
   getMeteorData() {
     // Add an initial empty daily if no other's are available.
     //console.log(Dailies.find().fetch().length);
-    if(Dailies.find().count() == 0) {
+
+    if(Dailies.find().count() == 0 && Meteor.userId()) {
       Meteor.call('addDaily');
     }
 
