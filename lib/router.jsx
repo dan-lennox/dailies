@@ -26,6 +26,7 @@ FlowRouter.route('/login', {
 });
 
 FlowRouter.route('/logout', {
+  name: 'logout',
   triggersEnter: [function(context, redirect) {
     Meteor.logout();
     FlowRouter.go('/login');
