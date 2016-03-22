@@ -47,7 +47,9 @@ Daily = React.createClass({
     
     // Is it a different day?
     let today = new Date();
-    if ((today.getDay() + 1) != this.data.date.getDay()) {
+    // Uncomment below to debug "tomorrow"
+    //if ((today.getDay() + 1) != this.data.date.getDay()) {
+    if (today.getDay() != this.data.date.getDay()) {
       // Create a new empty daily (next day).
       Meteor.call('addDaily');
     }
