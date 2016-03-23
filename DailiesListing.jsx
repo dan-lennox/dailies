@@ -13,15 +13,26 @@ DailiesListing = React.createClass({
 
   // Loads items from the Tasks collection and puts them on this.data.tasks
   getMeteorData() {
-    // Add an initial empty daily if no other's are available.
-    //console.log(Dailies.find().fetch().length);
 
     if(Dailies.find().count() == 0 && Meteor.userId()) {
+      // Add an initial empty daily if no other's are available.
+      Meteor.call('addDaily');
+    }
+
+    var dailies = Dailies.find().fetch();
+
+    // Is it a different day?
+    let today = new Date();
+    var latestDaily = new Date(dailies[dailies.length - 1].date);
+
+    // Uncomment below to debug "tomorrow"
+    //if ((today.getDay() + 1) != latestDaily.getDay()) {
+    if (today.getDay() != latestDaily.getDay()) {
       Meteor.call('addDaily');
     }
 
     return {
-      dailies: Dailies.find().fetch()
+      dailies: dailies
     }
   },
 
