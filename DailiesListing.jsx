@@ -25,8 +25,6 @@ DailiesListing = React.createClass({
     let today = new Date();
     var latestDaily = new Date(dailies[dailies.length - 1].date);
 
-    var dailiesSubscription = Meteor.subscribe("Dailies", Meteor.userId());
-
     // Uncomment below to debug "tomorrow"
     //if ((today.getDay() + 1) != latestDaily.getDay()) {
     if (today.getDay() != latestDaily.getDay()) {
@@ -34,16 +32,11 @@ DailiesListing = React.createClass({
     }
 
     return {
-      dailies: dailies,
-      ready: dailiesSubscription.ready()
+      dailies: dailies
     }
   },
 
   render() {
-
-    if (!this.data.ready) {
-      return <div>Loading...</div>
-    }
 
     var dailies = this.data.dailies.map((daily) => {
       return <Daily key={daily._id} daily={daily} />;
