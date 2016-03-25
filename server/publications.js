@@ -1,4 +1,7 @@
 Meteor.publish('Dailies', function(userId) {
+  if (!userId) {
+    return Dailies.find();
+  }
   return Dailies.find({user: userId});
 });
 

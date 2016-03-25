@@ -23,12 +23,17 @@ DailiesListing = React.createClass({
 
     // Is it a different day?
     let today = new Date();
-    var latestDaily = new Date(dailies[dailies.length - 1].date);
+    var latestDaily = dailies[dailies.length - 1];
+    if (latestDaily) {
+      var latestDate = new Date(latestDaily.date);
 
-    // Uncomment below to debug "tomorrow"
-    //if ((today.getDay() + 1) != latestDaily.getDay()) {
-    if (today.getDay() != latestDaily.getDay()) {
-      Meteor.call('addDaily');
+      // Uncomment below to debug "tomorrow"
+      //if ((today.getDay() + 1) != latestDaily.getDay()) {
+      if (today.getDay() != latestDate.getDay()) {
+        if (Meteor.userId()) {
+          Meteor.call('addDaily');
+        }
+      }
     }
 
     return {
