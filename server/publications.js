@@ -3,7 +3,7 @@ Meteor.publish('Dailies', function(userId) {
     return Dailies.find();
   }
   check(userId, String);
-  return Dailies.find({user: userId});
+  return Dailies.find({user: userId}, {sort: {date: 1}});
 });
 
 Meteor.publish('Images', function() {

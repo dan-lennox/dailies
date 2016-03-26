@@ -1,7 +1,6 @@
 //Needed for onTouchTap
 //Can go away when react 1.0 release
 injectTapEventPlugin();
-console.log('run');
 
 const {
   AppCanvas,

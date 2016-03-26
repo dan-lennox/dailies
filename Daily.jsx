@@ -44,15 +44,6 @@ Daily = React.createClass({
     var thisFile = Images.insert(file);
     // Update the Daily in the database.
     Meteor.call('updateDaily', id, thisFile);
-    
-    // Is it a different day?
-    let today = new Date();
-    // Uncomment below to debug "tomorrow"
-    //if ((today.getDay() + 1) != this.data.date.getDay()) {
-    if (today.getDay() != this.data.date.getDay()) {
-      // Create a new empty daily (next day).
-      Meteor.call('addDaily');
-    }
   },
 
   renderImage() {
