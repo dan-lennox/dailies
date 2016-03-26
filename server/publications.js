@@ -2,6 +2,7 @@ Meteor.publish('Dailies', function(userId) {
   if (!userId) {
     return Dailies.find();
   }
+  check(userId, String);
   return Dailies.find({user: userId});
 });
 
